@@ -1,72 +1,41 @@
-/* Vorschau Maßstab */
-.preview-wrapper {
+/* Avery Etikett 99,1 x 42,3 mm */
+.preview-container {
     width: 100%;
     max-width: 500px;
     aspect-ratio: 991 / 423;
     background: white;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    position: relative;
 }
 
-.label-box {
+.label-canvas {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-.label-text {
-    flex: 1;
-    display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 900;
     text-align: center;
-    line-height: 1.0;
-    font-size: 2.5rem; /* Wird via JS überschrieben */
+    font-weight: 900;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
 }
 
-.label-bottom {
-    height: 35%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Farblogik basierend auf deinen Vorgaben */
+.color-lo, .color-no { 
+    background-color: #22c55e; /* Grün */
+    color: #000000;            /* Schwarz */
 }
 
-.ghs-zone { 
-    display: flex; 
-    gap: 3px; 
-    align-items: center; 
-    width: 55%;
+.color-lc, .color-nc { 
+    background-color: #ef4444; /* Rot */
+    color: #ffffff;            /* Weiß */
 }
 
-.ghs-zone img {
-    height: 32px;
-    width: 32px;
-    object-fit: contain;
+.color-ea { 
+    background-color: #ffffff; /* Weiß */
+    color: #000000;            /* Schwarz */
+    border: 1px solid #eee;
 }
-
-.signal-zone { 
-    text-align: center; 
-    font-weight: 900; 
-    font-style: italic; 
-    font-size: 0.9rem; /* Kleiner gemacht */
-    width: 25%;
-}
-
-.arrow-zone { 
-    display: flex;
-    justify-content: flex-end;
-    width: 15%;
-    height: 70%;
-}
-
-/* Stoffklassen Farben */
-.bg-white { background-color: #ffffff; color: #000; border: 1px solid #ddd; }
-.bg-yellow { background-color: #ffff00; color: #000; }
-.bg-red { background-color: #ff0000; color: #fff; }
-.bg-brown { background-color: #8b4513; color: #fff; }
-.bg-green { background-color: #008000; color: #fff; }
-.bg-blue { background-color: #0000ff; color: #fff; }
-.bg-violet { background-color: #800080; color: #fff; }
