@@ -1,8 +1,7 @@
 const { jsPDF } = window.jspdf;
 
-let currentMode = 'single'; // 'single' oder 'list'
+let currentMode = 'single';
 
-// Modus-Umschalter Logik
 const btnSingle = document.getElementById('modeSingle');
 const btnList = document.getElementById('modeList');
 const divSingle = document.getElementById('inputSingle');
@@ -35,7 +34,6 @@ function updatePreview() {
     if (currentMode === 'single') {
         displayNum = document.getElementById('idInput').value;
     } else {
-        // Im Listen-Modus zeigt die Vorschau die erste Zeile
         const lines = document.getElementById('listInput').value.split('\n');
         displayNum = lines[0] || "";
     }
@@ -43,6 +41,7 @@ function updatePreview() {
     const pCard = document.getElementById('previewCard');
     const pText = document.getElementById('pText');
 
+    // Zusammenfügen als ein einziger Textblock
     pText.innerText = `${statusType}-${displayNum}`;
 
     pCard.className = "label-canvas";
@@ -52,6 +51,7 @@ function updatePreview() {
 
     const previewWidth = pCard.offsetWidth;
     const scaleFactor = previewWidth / 99.1;
+    // pt zu px Umrechnung
     pText.style.fontSize = (textSize * 0.3527 * scaleFactor) + "px";
 }
 
@@ -77,7 +77,6 @@ document.getElementById('pdfBtn').onclick = () => {
     const leftMargin = 6.4; 
     const topMargin = 21.6;
 
-    // Nummern vorbereiten
     let labelsToPrint = [];
     if (currentMode === 'single') {
         const val = document.getElementById('idInput').value;
@@ -95,19 +94,17 @@ document.getElementById('pdfBtn').onclick = () => {
         
         const fullText = `${statusType}-${labelsToPrint[i]}`;
 
-        // Hintergrund
         doc.setFillColor(cfg.bg[0], cfg.bg[1], cfg.bg[2]);
         doc.rect(x, y, labelW, labelH, 'F');
 
-        // Text (nur drucken, wenn nicht leer - wobei das Präfix immer da ist)
         doc.setTextColor(cfg.text[0], cfg.text[1], cfg.text[2]);
+        // Hier wird sichergestellt, dass Helvetica Bold für alles gilt
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(textSize);
+        doc.setFontSize(textSize * 1.8); // Skalierung für mm-Bereich
 
         doc.text(fullText, x + (labelW / 2), y + (labelH / 2), { 
             align: 'center', 
-            baseline: 'middle',
-            maxWidth: labelW - 10 
+            baseline: 'middle'
         });
     }
 
