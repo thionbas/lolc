@@ -2,12 +2,11 @@ const { jsPDF } = window.jspdf;
 
 function updatePreview() {
     const statusType = document.getElementById('statusType').value;
-    const idInput = document.getElementById('idInput').value || "XX-NN-NN";
+    const idInput = document.getElementById('idInput').value || "XX-XX-XX";
     const textSize = document.getElementById('textSize').value;
     
     document.getElementById('textSizeDisplay').innerText = textSize;
 
-    // Präfix Logik
     let prefix = statusType;
     if (statusType === "NC_ROT" || statusType === "NC_GRUEN") prefix = "NC";
     
@@ -17,7 +16,6 @@ function updatePreview() {
 
     pText.innerText = fullText;
 
-    // Farben in Vorschau umschalten
     pCard.className = "label-canvas";
     if (statusType === "LO") pCard.classList.add("color-lo");
     if (statusType === "LC") pCard.classList.add("color-lc");
@@ -25,7 +23,6 @@ function updatePreview() {
     if (statusType === "NC_GRUEN") pCard.classList.add("color-nc-gruen");
     if (statusType === "EA") pCard.classList.add("color-ea");
 
-    // Vorschau Schriftgröße (px-Umrechnung)
     const previewWidth = pCard.offsetWidth;
     const scaleFactor = previewWidth / 99.1;
     pText.style.fontSize = (textSize * 0.3527 * scaleFactor) + "px";
@@ -37,14 +34,13 @@ document.getElementById('pdfBtn').onclick = () => {
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
     
     const statusType = document.getElementById('statusType').value;
-    const idInput = document.getElementById('idInput').value || "XX-NN-NN";
+    const idInput = document.getElementById('idInput').value || "XX-XX-XX";
     const textSize = parseInt(document.getElementById('textSize').value);
 
     let prefix = statusType;
     if (statusType === "NC_ROT" || statusType === "NC_GRUEN") prefix = "NC";
     const fullText = `${prefix}-${idInput}`;
 
-    // PDF Farb-Konfiguration
     const colors = {
         LO: { bg: [34, 197, 94], text: [0, 0, 0] },
         LC: { bg: [239, 68, 68], text: [255, 255, 255] },
@@ -55,37 +51,32 @@ document.getElementById('pdfBtn').onclick = () => {
 
     const cfg = colors[statusType];
 
-    // Avery Zweckform 12er Bogen (L4743REV) Parameter
+    // Exakte Avery L4743REV Abstände (wie in /schilder)
     const labelW = 99.1;
     const labelH = 42.3;
-    const leftMargin = 5.9;
+    const leftMargin = 6.4; // Exakter Wert aus deiner schilder-App
     const topMargin = 21.6;
 
-    for (let r = 0; r < 6; r++) {
-        for (let c = 0; c < 2; c++) {
-            const x = leftMargin + (c * labelW);
-            const y = topMargin + (r * labelH);
+    for (let i = 0; i < 12; i++) {
+        const x = leftMargin + (i % 2 * labelW);
+        const y = topMargin + (Math.floor(i / 2) * labelH);
 
-            // Hintergrund
-            doc.setFillColor(cfg.bg[0], cfg.bg[1], cfg.bg[2]);
-            doc.rect(x, y, labelW, labelH, 'F');
+        // Hintergrund
+        doc.setFillColor(cfg.bg[0], cfg.bg[1], cfg.bg[2]);
+        doc.rect(x, y, labelW, labelH, 'F');
 
-            // Textfarbe & Schrift
-            doc.setTextColor(cfg.text[0], cfg.text[1], cfg.text[2]);
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(textSize * 2.8); // Skalierung für mm
+        // Text
+        doc.setTextColor(cfg.text[0], cfg.text[1], cfg.text[2]);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(textSize); 
 
-            // Text exakt zentriert im Etikett
-            doc.text(fullText, x + (labelW / 2), y + (labelH / 2), { 
-                align: 'center', 
-                baseline: 'middle',
-                maxWidth: labelW - 10 
-            });
-        }
+        doc.text(fullText, x + (labelW / 2), y + (labelH / 2), { 
+            align: 'center', 
+            baseline: 'middle'
+        });
     }
 
-    doc.save(`LOLC_Bogen_${fullText}.pdf`);
+    doc.save(`LOLC_${fullText}.pdf`);
 };
 
-// Startzustand laden
 updatePreview();
