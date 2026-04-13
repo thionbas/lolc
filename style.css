@@ -7,6 +7,7 @@
     overflow: hidden;
 }
 
+/* Hier wird die Schriftart für ALLES innerhalb der Vorschau erzwungen */
 .label-canvas {
     width: 100%;
     height: 100%;
@@ -15,9 +16,15 @@
     justify-content: center;
     text-align: center;
     font-weight: 900;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif !important;
     padding: 10px;
     box-sizing: border-box;
+    white-space: nowrap;
+}
+
+#pText {
+    font-family: 'Helvetica', 'Arial', sans-serif !important;
+    font-weight: 900;
 }
 
 .color-lo, .color-no { background-color: #22c55e; color: #000; }
