@@ -35,16 +35,16 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold mb-1 text-gray-600 uppercase">Nummerierung (hinter dem Bindestrich)</label>
-                    <input type="text" id="idInput" value="XX-XX-XX" class="w-full p-4 border-2 rounded-md font-bold text-2xl outline-none focus:border-[#064e3b]" placeholder="z.B. 01-22-33">
+                    <label class="block text-sm font-bold mb-1 text-gray-600 uppercase">Nummerierung (z.B. 01-22-33)</label>
+                    <input type="text" id="idInput" placeholder="bitte nummer eingeben" class="w-full p-4 border-2 rounded-md font-bold text-2xl outline-none focus:border-[#064e3b]">
                 </div>
 
                 <div>
                     <label class="flex justify-between text-sm font-bold mb-1 text-gray-600 uppercase">
                         <span>Schriftgröße</span>
-                        <span id="textSizeDisplay" class="font-mono text-[#064e3b]">30</span>
+                        <span id="textSizeDisplay" class="font-mono text-[#064e3b]">45</span>
                     </label>
-                    <input type="range" id="textSize" min="10" max="80" value="30" class="w-full cursor-pointer accent-[#064e3b]">
+                    <input type="range" id="textSize" min="10" max="100" value="45" class="w-full cursor-pointer accent-[#064e3b]">
                 </div>
             </div>
 
@@ -57,10 +57,10 @@
             <span class="text-sm font-bold text-gray-400 mb-3 uppercase tracking-widest">Etikett Vorschau</span>
             <div class="preview-container shadow-2xl">
                 <div id="previewCard" class="label-canvas color-lo">
-                    <span id="pText">LO-XX-XX-XX</span>
+                    <span id="pText">LO-</span>
                 </div>
             </div>
-            <p class="mt-4 text-xs text-gray-500 uppercase">99,1 x 42,3 mm | 12 Etiketten pro Bogen</p>
+            <p class="mt-4 text-xs text-gray-500 uppercase">99,1 x 42,3 mm | Avery L4743REV</p>
         </section>
     </main>
 
