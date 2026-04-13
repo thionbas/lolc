@@ -20,7 +20,13 @@
     box-sizing: border-box;
 }
 
-/* Farblogik für die Vorschau */
+/* Farblogik */
 .color-lo, .color-nc-gruen { background-color: #22c55e; color: #000; }
 .color-lc, .color-nc-rot { background-color: #ef4444; color: #fff; }
 .color-ea { background-color: #ffffff; color: #000; border: 1px solid #eee; }
+
+/* Platzhalter-Styling für das Input-Feld (optional, Tailwind macht das meist schon) */
+input::placeholder {
+    color: #9ca3af;
+    font-weight: normal;
+}
