@@ -1,32 +1,72 @@
-.preview-container {
+/* Vorschau Maßstab */
+.preview-wrapper {
     width: 100%;
     max-width: 500px;
     aspect-ratio: 991 / 423;
     background: white;
-    border: 1px solid #ddd;
-    overflow: hidden;
 }
 
-.label-canvas {
+.label-box {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.label-text {
+    flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
     font-weight: 900;
-    font-family: 'Helvetica', 'Arial', sans-serif;
-    padding: 10px;
-    box-sizing: border-box;
+    text-align: center;
+    line-height: 1.0;
+    font-size: 2.5rem; /* Wird via JS überschrieben */
 }
 
-/* Farblogik */
-.color-lo, .color-nc-gruen { background-color: #22c55e; color: #000; }
-.color-lc, .color-nc-rot { background-color: #ef4444; color: #fff; }
-.color-ea { background-color: #ffffff; color: #000; border: 1px solid #eee; }
-
-/* Platzhalter-Styling für das Input-Feld (optional, Tailwind macht das meist schon) */
-input::placeholder {
-    color: #9ca3af;
-    font-weight: normal;
+.label-bottom {
+    height: 35%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.ghs-zone { 
+    display: flex; 
+    gap: 3px; 
+    align-items: center; 
+    width: 55%;
+}
+
+.ghs-zone img {
+    height: 32px;
+    width: 32px;
+    object-fit: contain;
+}
+
+.signal-zone { 
+    text-align: center; 
+    font-weight: 900; 
+    font-style: italic; 
+    font-size: 0.9rem; /* Kleiner gemacht */
+    width: 25%;
+}
+
+.arrow-zone { 
+    display: flex;
+    justify-content: flex-end;
+    width: 15%;
+    height: 70%;
+}
+
+/* Stoffklassen Farben */
+.bg-white { background-color: #ffffff; color: #000; border: 1px solid #ddd; }
+.bg-yellow { background-color: #ffff00; color: #000; }
+.bg-red { background-color: #ff0000; color: #fff; }
+.bg-brown { background-color: #8b4513; color: #fff; }
+.bg-green { background-color: #008000; color: #fff; }
+.bg-blue { background-color: #0000ff; color: #fff; }
+.bg-violet { background-color: #800080; color: #fff; }
