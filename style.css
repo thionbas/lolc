@@ -1,4 +1,3 @@
-/* Avery Etikett Format 99.1 x 42.3 mm */
 .preview-container {
     width: 100%;
     max-width: 500px;
@@ -21,19 +20,7 @@
     box-sizing: border-box;
 }
 
-/* Dynamische Farbstile */
-.color-lo, .color-nc-gruen { 
-    background-color: #22c55e; 
-    color: #000; 
-}
-
-.color-lc, .color-nc-rot { 
-    background-color: #ef4444; 
-    color: #fff; 
-}
-
-.color-ea { 
-    background-color: #ffffff; 
-    color: #000; 
-    border: 1px solid #eee;
-}
+/* Farblogik für die Vorschau */
+.color-lo, .color-nc-gruen { background-color: #22c55e; color: #000; }
+.color-lc, .color-nc-rot { background-color: #ef4444; color: #fff; }
+.color-ea { background-color: #ffffff; color: #000; border: 1px solid #eee; }
