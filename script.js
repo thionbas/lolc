@@ -1,141 +1,85 @@
 const { jsPDF } = window.jspdf;
 
-// GHS UI Generator
-const ghsPicker = document.getElementById('ghsPicker');
-for (let i = 1; i <= 9; i++) {
-    const id = i.toString().padStart(3, '0'); 
-    const fileName = `ghs_${id}.png`; 
-    
-    const div = document.createElement('div');
-    div.className = "flex flex-col items-center p-2 border-2 rounded bg-white hover:border-[#064e3b] transition cursor-pointer";
-    div.innerHTML = `
-        <img src="${fileName}" class="w-10 h-10 object-contain mb-1" onerror="this.style.opacity='0.3';">
-        <div class="flex items-center gap-1">
-            <input type="checkbox" value="${id}" class="ghs-check cursor-pointer">
-            <span class="text-[9px] font-bold">GHS ${i}</span>
-        </div>
-    `;
-    
-    div.onclick = (e) => {
-        if(e.target.tagName !== 'INPUT') {
-            const cb = div.querySelector('input');
-            const selected = document.querySelectorAll('.ghs-check:checked');
-            if(!cb.checked && selected.length >= 5) {
-                alert("Maximal 5 Symbole erlaubt.");
-                return;
-            }
-            cb.checked = !cb.checked;
-            updatePreview();
-        }
-    };
-    ghsPicker.appendChild(div);
-}
-
-const ARROWS = {
-    none: '',
-    right: '<path d="M10,40 h50 v-20 l40,30 l-40,30 v-20 h-50 z"/>',
-    left:  '<path d="M90,40 h-50 v-20 l-40,30 l40,30 v-20 h50 z"/>',
-    up:    '<path d="M40,90 v-50 h-20 l30,-40 l30,40 h-20 v50 z"/>',
-    down:  '<path d="M40,10 v50 h-20 l30,40 l30,-40 h-20 v-50 z"/>'
-};
-
 function updatePreview() {
-    const subClass = document.getElementById('subClass').value;
-    let text = document.getElementById('mainText').value || "TEXT";
-    const textCase = document.getElementById('textCase').value;
-    const signal = document.getElementById('signal').value;
-    const arrow = document.getElementById('arrowDir').value;
-    const fontSize = document.getElementById('textSize').value;
+    const statusType = document.getElementById('statusType').value;
+    const mainText = document.getElementById('mainText').value;
+    const textSize = document.getElementById('textSize').value;
     
-    document.getElementById('fontSizeVal').innerText = fontSize;
+    document.getElementById('fontSizeDisplay').innerText = textSize;
 
-    if(textCase === 'upper') text = text.toUpperCase();
-    else if(textCase === 'lower') text = text.toLowerCase();
+    const pCard = document.getElementById('previewCard');
+    const pText = document.getElementById('pText');
 
-    const card = document.getElementById('previewCard');
-    card.className = `label-box bg-${subClass}`;
-    document.getElementById('pText').innerText = text;
-    document.getElementById('pSignal').innerText = signal;
-    document.getElementById('previewArrowSvg').innerHTML = ARROWS[arrow];
+    // Text zusammensetzen (Präfix + Bindestrich + Nutzertext)
+    pText.innerText = `${statusType}-${mainText}`;
 
-    const textEl = document.getElementById('pText');
-    textEl.style.fontSize = (fontSize / 10) + "rem";
+    // Farben umschalten
+    pCard.className = "label-canvas";
+    if (statusType === "LO" || statusType === "NO") pCard.classList.add("color-lo");
+    if (statusType === "LC" || statusType === "NC") pCard.classList.add("color-lc");
+    if (statusType === "EA") pCard.classList.add("color-ea");
 
-    const ghsZone = document.getElementById('pGhs');
-    ghsZone.innerHTML = '';
-    document.querySelectorAll('.ghs-check:checked').forEach(cb => {
-        const img = document.createElement('img');
-        img.src = `ghs_${cb.value}.png`;
-        ghsZone.appendChild(img);
-    });
+    // Vorschau Schriftgröße anpassen
+    const previewWidth = pCard.offsetWidth;
+    const scaleFactor = previewWidth / 99.1;
+    // pt zu px Umrechnung für den Browser
+    pText.style.fontSize = (textSize * 0.3527 * scaleFactor) + "px";
 }
 
-document.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', updatePreview);
-});
+// Event-Listener für Eingaben
+document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', updatePreview));
 
 document.getElementById('pdfBtn').onclick = () => {
-    // Falls Fehler auftreten, wird eine Meldung in der Konsole ausgegeben
-    try {
-        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-        const subClass = document.getElementById('subClass').value;
-        let text = document.getElementById('mainText').value || "TEXT";
-        const textCase = document.getElementById('textCase').value;
-        const signal = document.getElementById('signal').value;
-        const arrow = document.getElementById('arrowDir').value;
-        const fontSize = parseInt(document.getElementById('textSize').value);
-        const selectedGhs = Array.from(document.querySelectorAll('.ghs-check:checked')).map(cb => cb.value);
+    const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+    
+    const statusType = document.getElementById('statusType').value;
+    const mainText = document.getElementById('mainText').value;
+    const textSize = parseInt(document.getElementById('textSize').value);
+    const fullText = `${statusType}-${mainText}`;
 
-        if(textCase === 'upper') text = text.toUpperCase();
-        else if(textCase === 'lower') text = text.toLowerCase();
+    // PDF Farb-Konfiguration
+    const colors = {
+        LO: { bg: [34, 197, 94], text: [0, 0, 0] },
+        NO: { bg: [34, 197, 94], text: [0, 0, 0] },
+        LC: { bg: [239, 68, 68], text: [255, 255, 255] },
+        NC: { bg: [239, 68, 68], text: [255, 255, 255] },
+        EA: { bg: [255, 255, 255], text: [0, 0, 0] }
+    };
 
-        const colors = { 
-            white:[255,255,255], yellow:[255,255,0], red:[255,0,0], 
-            brown:[139,69,19], green:[0,128,0], blue:[0,0,255], violet:[128,0,128] 
-        };
+    const cfg = colors[statusType];
 
-        for (let i = 0; i < 12; i++) {
-            const x = 6.4 + (i % 2 * 99.1);
-            const y = 21.6 + (Math.floor(i / 2) * 42.3);
+    // Avery Zweckform 12er Bogen Parameter
+    const labelW = 99.1;
+    const labelH = 42.3;
+    const leftMargin = 6.4; 
+    const topMargin = 21.6;
 
-            doc.setFillColor(...colors[subClass]);
-            doc.rect(x, y, 99.1, 42.3, 'F');
-            
-            const isDark = !['white', 'yellow'].includes(subClass);
-            doc.setTextColor(isDark ? 255 : 0);
+    for (let i = 0; i < 12; i++) {
+        const col = i % 2;
+        const row = Math.floor(i / 2);
+        
+        const x = leftMargin + (col * labelW);
+        const y = topMargin + (row * labelH);
 
-            // Haupttext mit der Slider-Größe
-            doc.setFontSize(fontSize);
-            doc.setFont("helvetica", "bold");
-            doc.text(text, x + 49.5, y + 18, { align: 'center', maxWidth: 90 });
+        // Hintergrund
+        doc.setFillColor(cfg.bg[0], cfg.bg[1], cfg.bg[2]);
+        doc.rect(x, y, labelW, labelH, 'F');
 
-            // Signalwort kleiner und leicht verschoben (X = 65 statt 55)
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "bolditalic");
-            doc.text(signal, x + 65, y + 36, { align: 'center' });
+        // Text
+        doc.setTextColor(cfg.text[0], cfg.text[1], cfg.text[2]);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(textSize);
 
-            // GHS
-            for(let g = 0; g < selectedGhs.length; g++) {
-                try {
-                    doc.addImage(`ghs_${selectedGhs[g]}.png`, 'PNG', x + 5 + (g * 10), y + 29, 9, 9);
-                } catch(e) {}
-            }
-
-            // Pfeil
-            if(arrow !== 'none') {
-                doc.setFillColor(isDark ? 255 : 0);
-                const ax = x + 85; const ay = y + 34;
-                if(arrow === 'right') { doc.rect(ax-4, ay-1.5, 6, 3, 'F'); doc.triangle(ax+2, ay-4, ax+2, ay+4, ax+7, ay, 'F'); }
-                else if(arrow === 'left') { doc.rect(ax-2, ay-1.5, 6, 3, 'F'); doc.triangle(ax-2, ay-4, ax-2, ay+4, ax-7, ay, 'F'); }
-                else if(arrow === 'up') { doc.rect(ax-1.5, ay, 3, 6, 'F'); doc.triangle(ax-4, ay, ax+4, ay, ax, ay-5, 'F'); }
-                else if(arrow === 'down') { doc.rect(ax-1.5, ay-6, 3, 6, 'F'); doc.triangle(ax-4, ay, ax+4, ay, ax, ay+5, 'F'); }
-            }
-        }
-        doc.save("Rohrleitungs_Schilder.pdf");
-    } catch (err) {
-        alert("Fehler beim Erstellen der PDF. Bitte stelle sicher, dass alle Bilder geladen sind.");
-        console.error(err);
+        // Exakt zentriert
+        doc.text(fullText, x + (labelW / 2), y + (labelH / 2), { 
+            align: 'center', 
+            baseline: 'middle',
+            maxWidth: labelW - 10 
+        });
     }
+
+    doc.save(`LOLC_${fullText}.pdf`);
 };
 
+// Initialisierung
 updatePreview();
