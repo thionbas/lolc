@@ -1,10 +1,10 @@
-/* Vorschau auf A4 Landscape Verhältnis */
+/* Avery Etikett Format 99.1 x 42.3 mm */
 .preview-container {
     width: 100%;
-    max-width: 700px;
-    aspect-ratio: 297 / 210;
+    max-width: 500px;
+    aspect-ratio: 991 / 423;
     background: white;
-    border: 2px solid #333;
+    border: 1px solid #ddd;
     overflow: hidden;
 }
 
@@ -17,12 +17,23 @@
     text-align: center;
     font-weight: 900;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
-    word-break: break-all;
 }
 
-/* Farblogik */
-.color-lo, .color-nc-gruen { background-color: #22c55e; color: #000; } /* Grün / Schwarz */
-.color-lc, .color-nc-rot { background-color: #ef4444; color: #fff; }   /* Rot / Weiß */
-.color-ea { background-color: #ffffff; color: #000; border: 1px solid #ddd; } /* Weiß / Schwarz */
+/* Dynamische Farbstile */
+.color-lo, .color-nc-gruen { 
+    background-color: #22c55e; 
+    color: #000; 
+}
+
+.color-lc, .color-nc-rot { 
+    background-color: #ef4444; 
+    color: #fff; 
+}
+
+.color-ea { 
+    background-color: #ffffff; 
+    color: #000; 
+    border: 1px solid #eee;
+}
