@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LO/LC - Etiketten App</title>
+    <title>LO/LC PRINTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -26,41 +26,41 @@
                 <div>
                     <label class="block text-sm font-bold mb-1 text-gray-600 uppercase">Status wählen</label>
                     <select id="statusType" class="w-full p-4 border-2 rounded-md font-bold text-xl outline-none focus:border-[#064e3b]">
-                        <option value="LO">LO (Grün)</option>
-                        <option value="LC">LC (Rot)</option>
-                        <option value="NC_ROT">NC (Rot)</option>
-                        <option value="NC_GRUEN">NC (Grün)</option>
-                        <option value="EA">EA (Weiß)</option>
+                        <option value="LO">LO (Grün / Schwarz)</option>
+                        <option value="LC">LC (Rot / Weiß)</option>
+                        <option value="NC_ROT">NC (Rot / Weiß)</option>
+                        <option value="NC_GRUEN">NC (Grün / Schwarz)</option>
+                        <option value="EA">EA (Weiß / Schwarz)</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold mb-1 text-gray-600 uppercase">Nummerierung</label>
-                    <input type="text" id="idInput" class="w-full p-4 border-2 rounded-md font-bold text-2xl outline-none focus:border-[#064e3b]" placeholder="z.B. 01-22-33">
+                    <label class="block text-sm font-bold mb-1 text-gray-600 uppercase">Nummerierung (hinter dem Bindestrich)</label>
+                    <input type="text" id="idInput" value="XX-XX-XX" class="w-full p-4 border-2 rounded-md font-bold text-2xl outline-none focus:border-[#064e3b]" placeholder="z.B. 01-22-33">
                 </div>
 
                 <div>
                     <label class="flex justify-between text-sm font-bold mb-1 text-gray-600 uppercase">
                         <span>Schriftgröße</span>
-                        <span id="textSizeDisplay" class="font-mono text-[#064e3b]">32</span>
+                        <span id="textSizeDisplay" class="font-mono text-[#064e3b]">30</span>
                     </label>
-                    <input type="range" id="textSize" min="10" max="80" value="32" class="w-full cursor-pointer accent-[#064e3b]">
+                    <input type="range" id="textSize" min="10" max="80" value="30" class="w-full cursor-pointer accent-[#064e3b]">
                 </div>
             </div>
 
             <button id="pdfBtn" class="w-full bg-[#064e3b] text-white py-4 rounded-md font-black text-2xl hover:bg-green-800 transition-all shadow-md mt-10 tracking-widest uppercase">
-                12 ETIKETTEN DRUCKEN (PDF)
+                12 ETIKETTEN DRUCKEN
             </button>
         </section>
 
         <section class="flex flex-col items-center">
-            <span class="text-sm font-bold text-gray-400 mb-3 uppercase tracking-widest">Einzel-Etikett Vorschau</span>
+            <span class="text-sm font-bold text-gray-400 mb-3 uppercase tracking-widest">Etikett Vorschau</span>
             <div class="preview-container shadow-2xl">
                 <div id="previewCard" class="label-canvas color-lo">
-                    <span id="pText">LO-01-22-33</span>
+                    <span id="pText">LO-XX-XX-XX</span>
                 </div>
             </div>
-            <p class="mt-4 text-xs text-gray-500 uppercase">Format: 99,1 x 42,3 mm (12er Bogen)</p>
+            <p class="mt-4 text-xs text-gray-500 uppercase">99,1 x 42,3 mm | 12 Etiketten pro Bogen</p>
         </section>
     </main>
 
